@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
 RUN pecl install xdebug apcu \
     && docker-php-ext-enable xdebug apcu \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
-    && docker-php-ext-install pdo pdo_pgsql pgsql intl opcache
+    && docker-php-ext-install pdo pdo_pgsql pgsql intl opcache zip
 
 RUN apt-get update \
     && apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev \
