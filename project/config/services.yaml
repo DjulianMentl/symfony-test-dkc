@@ -22,6 +22,9 @@ services:
     App\Service\WeatherService:
         arguments:
             $apiKey: '%env(OPEN_WEATHER_MAP_API_KEY)%'
+    App\Command\ExportUserCommand:
+        arguments:
+            $container: '@service_container'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

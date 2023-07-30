@@ -119,7 +119,8 @@ class UserController extends AbstractController
 
         $writer = new Xlsx($spreadsheet);
 
-        $writer->save('upload/users.xlsx');
+        $filePath = $this->getParameter('kernel.project_dir') . '/public/upload/users.xlsx';
+        $writer->save($filePath);
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
