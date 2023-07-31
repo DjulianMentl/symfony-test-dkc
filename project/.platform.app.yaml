@@ -1,4 +1,4 @@
 crons:
   export_user:
     spec: '*/5 * * * *'
-    cmd: croncape symfony console app:export-user
+    cmd: croncape bin/console app:export-user
