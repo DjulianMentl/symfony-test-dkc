@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use App\Service\CacheService;
+use App\Service\ExcelService;
 use App\Service\WeatherService;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -97,30 +98,12 @@ class UserController extends AbstractController
      * @throws Exception
      */
     #[Route('/export', name: 'app_user_export', methods: ['GET'], priority: 2)]
-    public function exportUsers(UserRepository $userRepository): Response
+    public function exportUsers(UserRepository $userRepository, ExcelService $excelService): Response
     {
         $users = $userRepository->findAll();
-
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-
-        $sheet->setCellValue('A1', '№');
-        $sheet->setCellValue('B1', 'Имя');
-        $sheet->setCellValue('C1', 'Город');
-
-        $row = 2;
-
-        foreach ($users as $user) {
-            $sheet->setCellValue('A' . $row, $user->getId());
-            $sheet->setCellValue('B' . $row, $user->getName());
-            $sheet->setCellValue('C' . $row, $user->getCity());
-            $row++;
-        }
-
-        $writer = new Xlsx($spreadsheet);
-
         $filePath = $this->getParameter('kernel.project_dir') . '/public/upload/users.xlsx';
-        $writer->save($filePath);
+
+        $excelService->exportUsers($users, $filePath);
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
